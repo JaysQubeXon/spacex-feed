@@ -1,0 +1,25 @@
+.refresh {
+  border: 3px solid white;
+  border-radius: 50%;
+  padding: 5px;
+  margin: 0 20px 0;
+  background: transparent;
+  cursor: pointer;
+  &-icon {
+    width: 23px;
+    height: 23px;
+    margin-bottom: -4px;
+  }
+  &-spin {
+    animation: spin-refresh 1500ms linear;
+  }
+}
+
+@keyframes spin-refresh {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(960deg);
+  }
+}

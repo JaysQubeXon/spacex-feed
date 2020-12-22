@@ -1,30 +1,25 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { makeStyles, Theme } from "@material-ui/core/styles";
-import logo from "./logo.svg";
+import { useGetLaunchesQuery, useGetRocketsQuery } from "../data/spacex";
+import { useControls } from "../data/hooks/useControls";
+import { filterLandSuccess, filterReused, filterWithReddit } from "../data/actions";
+import Controls from "./Controls/Controls";
+import Feed from "./Feed/Feed";
+import { Launch, Rocket } from "../index.d";
 
 const useStyles = makeStyles((theme: Theme) => ({
   app: {
-    textAlign: "center",
+    width: "100vw",
+    height: "100vh",
   },
   header: {
-    backgroundColor: "#282c34",
-    minHeight: "100vh",
+    backgroundColor: "transparent",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     fontSize: "calc(10px + 2vmin)",
     color: "white",
-  },
-  logo: {
-    height: "40vmin",
-    pointerEvents: "none",
-    "@media (prefers-reduced-motion: no-preference)": {
-      animation: "$logo-spin infinite 20s linear",
-    },
-  },
-  link: {
-    color: "#61dafb",
   },
   "@keyframes logo-spin": {
     from: {
@@ -36,26 +31,45 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-type CustomWindow = Window & {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  env?: any;
+const capitalize = (str: string) => {
+  return str.replace(str[0], str[0].toUpperCase());
 };
 
 const App: React.FC = () => {
-  const runtime: CustomWindow = window;
+  const { data, error, isLoading } = useGetLaunchesQuery(undefined);
+  const { data: rocketData, isLoading: isRocketDataLoading } = useGetRocketsQuery(undefined);
+
+  const { withLandSuccess, withReused, withReddit } = useControls();
+
+  const launches = useMemo(() => {
+    let feed: Launch[] = data || [];
+    if (withLandSuccess) feed = filterLandSuccess(feed);
+    if (withReused) feed = filterReused(feed);
+    if (withReddit) feed = filterWithReddit(feed);
+
+    if (isRocketDataLoading || !rocketData) return feed;
+
+    const withRocketTypes = feed.map((launch) => {
+      const rocket = rocketData.find((rocket: Rocket) => rocket.id === launch.rocket);
+      return {
+        ...launch,
+        rocket_type: `${capitalize(rocket!.engines.type)} ${rocket!.engines.version}`,
+      };
+    });
+    return withRocketTypes;
+  }, [data, rocketData, isRocketDataLoading, withLandSuccess, withReused, withReddit]);
+
   const classes = useStyles();
+  if (isLoading || !data) return null;
   return (
     <div className={classes.app}>
       <header className={classes.header}>
-        <img src={logo} className={classes.logo} alt="logo" />
-        {runtime.env && <p>{JSON.stringify(runtime.env)}</p>}
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a className={classes.link} href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
+        <h1>SpaceX Launches</h1>
       </header>
+      <div>
+        <Controls isLoading={isLoading} />
+        <Feed feed={launches} error={error} isLoading={isLoading} />
+      </div>
     </div>
   );
 };

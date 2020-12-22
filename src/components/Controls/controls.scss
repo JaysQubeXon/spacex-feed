@@ -1,0 +1,69 @@
+.Controls {
+  width: 954px;
+  height: 77px;
+  margin: 0 auto;
+  border: 1px solid white;
+  border-radius: 10px 10px 0px 0px;
+  border-bottom: none;
+  background: rgba(white, 0.1);
+
+  display: flex;
+  flex: 1;
+  align-items: center;
+
+  &-Items {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+  }
+  &-Checkbox {
+    padding-right: 27px;
+
+    & label {
+      font-size: 14px;
+      font-family: "Geomanist", sans-serif;
+      color: white;
+    }
+  }
+}
+
+.checkbox {
+  display: inline-block;
+  position: relative;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 1px solid #cacece;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+  padding: 9px;
+  border-radius: 3px;
+  margin: 0 10px -5px 0;
+  cursor: pointer;
+
+  &:active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  &:checked {
+    background-color: transparent;
+    border: 1px solid #adb8c0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05),
+      inset 15px 10px -12px rgba(255, 255, 255, 0.1);
+    color: #99a1a7;
+
+    &:active {
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    &:after {
+      content: url(../../assets/images/checkmark.svg);
+      font-size: 14px;
+      position: absolute;
+      top: 0px;
+      left: 2px;
+      color: #99a1a7;
+    }
+  }
+  &:focus {
+    outline-width: 0;
+  }
+}

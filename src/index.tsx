@@ -11,6 +11,9 @@ import i18n from "./i18n";
 import App from "./ui";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
+import { Provider } from "react-redux";
+import { store } from "./data/store";
+import "./index.scss";
 
 const Loading: React.FC = () => {
   return <div>Loading...</div>;
@@ -22,8 +25,10 @@ const Root: React.FC = () => {
       <React.Suspense fallback={<Loading />}>
         <I18nextProvider i18n={i18n}>
           <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <App></App>
+            <Provider store={store}>
+              <CssBaseline />
+              <App />
+            </Provider>
           </ThemeProvider>
         </I18nextProvider>
       </React.Suspense>

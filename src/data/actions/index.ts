@@ -1,23 +1,27 @@
 import { Launch } from "../../index.d";
-import { REFRESH_REQUESTED, TOGGLE_LAND_SUCCESS, TOGGLE_REUSED, TOGGLE_WITH_REDDIT } from "../constants";
+import {
+  REFRESH_REQUESTED,
+  RESET_CONTROLS,
+  TOGGLE_LAND_SUCCESS,
+  TOGGLE_REUSED,
+  TOGGLE_WITH_REDDIT,
+} from "../constants";
 
 import { ControlsState } from "../reducers/controls";
 
-export const triggerRefresh = () => {
-  return { type: REFRESH_REQUESTED };
-};
+import { actionCreatorFactory } from "typescript-fsa";
 
-export function toggleLandSuccess() {
-  return { type: TOGGLE_LAND_SUCCESS };
-}
+const actionCreator = actionCreatorFactory("SPACEX");
 
-export function toggleReused() {
-  return { type: TOGGLE_REUSED };
-}
+export const triggerRefresh = actionCreator.async(REFRESH_REQUESTED, async () => {
+  // TODO: should refresh be implemented here or in rtk-query?
+  return true;
+});
 
-export function toggleWithReddit() {
-  return { type: TOGGLE_WITH_REDDIT };
-}
+export const resetControls = actionCreator<void>(RESET_CONTROLS);
+export const toggleLandSuccess = actionCreator<void>(TOGGLE_LAND_SUCCESS);
+export const toggleReused = actionCreator<void>(TOGGLE_REUSED);
+export const toggleWithReddit = actionCreator<void>(TOGGLE_WITH_REDDIT);
 
 export function filterLandSuccess(feed: Launch[]) {
   return feed.filter((item) => (item.success ? true : false));

@@ -28,7 +28,7 @@ export interface Launch {
     presskit: string;
     webcast: string;
     youtube_id: string;
-    article: string;
+    article: string | null;
     wikipedia: string;
   };
   static_fire_date_utc: Date;

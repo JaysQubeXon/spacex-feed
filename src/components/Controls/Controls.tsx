@@ -25,7 +25,7 @@ export interface ControlItemProps {
 }
 
 const Controls: React.FC<ControlProps> = ({ isLoading }) => {
-  const { withLandSuccess, withReused, withReddit } = useControls();
+  const { withLandSuccess, withReused, withReddit, isRefreshing } = useControls();
   const dispatch = useDispatch();
 
   const handleRefresh = (e: SyntheticEvent) => {
@@ -35,20 +35,20 @@ const Controls: React.FC<ControlProps> = ({ isLoading }) => {
   };
 
   const onToggleLandSuccess = () => {
-    dispatch(toggleLandSuccess);
+    dispatch(toggleLandSuccess());
   };
 
   const onToggleReused = () => {
-    dispatch(toggleReused);
+    dispatch(toggleReused());
   };
 
   const onToggleWithReddit = () => {
-    dispatch(toggleWithReddit);
+    dispatch(toggleWithReddit());
   };
 
   return (
     <div className="Controls">
-      <RefreshButton isLoading={isLoading} onClick={handleRefresh} />
+      <RefreshButton isLoading={isLoading || isRefreshing} onClick={handleRefresh} />
 
       <div className="Controls-Items">
         <ControlItem

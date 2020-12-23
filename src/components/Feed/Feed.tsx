@@ -21,7 +21,7 @@ export interface LaunchItemProps {
   date: string;
   details: string;
   id: number;
-  article: string;
+  article: string | null;
 }
 
 export interface ResultCountProps {

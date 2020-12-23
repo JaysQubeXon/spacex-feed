@@ -1,18 +1,13 @@
-import React, { SyntheticEvent } from "react";
+import React from "react";
 import RefreashIcon from "../../assets/images/refresh.svg";
 import { bool, func } from "prop-types";
 import "./refresh.scss";
 import { RefreshButtonProps } from "./Controls";
+import cn from "classnames";
 
 const RefreshButton: React.FC<RefreshButtonProps> = ({ isLoading, onClick }) => (
-  <button
-    type="button"
-    disabled={isLoading}
-    className={`refresh`}
-    onClick={(e: SyntheticEvent) => onClick(e)}
-    title="click to refresh feed"
-  >
-    <img alt="refresh" src={RefreashIcon} className={`refresh-icon${isLoading ? ` refresh-spin` : ""}`} />
+  <button type="button" disabled={isLoading} className={`refresh`} onClick={onClick} title="click to refresh feed">
+    <img alt="refresh" src={RefreashIcon} className={cn("refresh-icon", { "refresh-spin": isLoading })} />
   </button>
 );
 

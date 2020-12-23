@@ -1,12 +1,5 @@
-import {
-  REFRESH_FAILED,
-  REFRESH_REQUESTED,
-  REFRESH_SUCCEEDED,
-  RESET_CONTROLS,
-  TOGGLE_LAND_SUCCESS,
-  TOGGLE_REUSED,
-  TOGGLE_WITH_REDDIT,
-} from "../constants";
+import { reducerWithInitialState } from "typescript-fsa-reducers";
+import { resetControls, toggleLandSuccess, toggleReused, toggleWithReddit, triggerRefresh } from "../actions";
 
 const initialState: ControlsState = {
   isLoading: false,
@@ -15,44 +8,18 @@ const initialState: ControlsState = {
   withReddit: false,
 };
 
-export function controlsReducer(state: ControlsState = initialState, action: any) {
-  switch (action.type) {
-    case REFRESH_REQUESTED:
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case REFRESH_FAILED:
-    case REFRESH_SUCCEEDED:
-      return {
-        ...state,
-        isLoading: false,
-      };
-    case TOGGLE_LAND_SUCCESS:
-      return {
-        ...state,
-        withLandSuccess: !state.withLandSuccess,
-      };
-    case TOGGLE_REUSED:
-      return {
-        ...state,
-        withReused: !state.withReused,
-      };
-    case TOGGLE_WITH_REDDIT:
-      return {
-        ...state,
-        withReddit: !state.withReddit,
-      };
-    case RESET_CONTROLS:
-      return {
-        ...state,
-        ...initialState,
-      };
-    default:
-      return state;
-  }
-}
-
+export const controlsReducer = reducerWithInitialState(initialState)
+  .case(triggerRefresh.started, (state) => {
+    console.log("here now");
+    return { ...state, isLoading: true };
+  })
+  .case(triggerRefresh.failed, (state) => ({ ...state, isLoading: false }))
+  .case(triggerRefresh.done, (state) => ({ ...state, isLoading: false }))
+  .case(toggleLandSuccess, (state) => ({ ...state, withLandSuccess: !state.withLandSuccess }))
+  .case(toggleReused, (state) => ({ ...state, withReused: !state.withReused }))
+  .case(toggleWithReddit, (state) => ({ ...state, withReddit: !state.withReddit }))
+  .case(resetControls, (state) => ({ ...state, ...initialState }))
+  .build();
 export interface ControlsState {
   isLoading: boolean;
   withLandSuccess: boolean;

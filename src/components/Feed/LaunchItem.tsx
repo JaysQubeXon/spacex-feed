@@ -19,9 +19,11 @@ const LaunchItem: React.FC<LaunchItemProps> = ({ badge, name, type, date, detail
     <div>{details}</div>
     <div>{id}</div>
     <div>
-      <a href={article} target="_blank" rel="noopener noreferrer" title="click to find out">
-        <img src={LinkIcon} alt="article" height="21" width="21" />
-      </a>
+      {article && (
+        <a href={article} target="_blank" rel="noopener noreferrer" title="click to find out">
+          <img src={LinkIcon} alt="article" height="21" width="21" />
+        </a>
+      )}
     </div>
   </div>
 );
@@ -33,7 +35,7 @@ LaunchItem.propTypes = {
   date: string.isRequired,
   details: string.isRequired,
   id: number.isRequired,
-  article: string.isRequired,
+  article: string,
 };
 
 export default LaunchItem;

@@ -1,12 +1,15 @@
 import { useSelector } from "react-redux";
 import { AppStore } from "../store";
 
-export function useControls() {
-  const controls = useSelector((state: AppStore) => ({
-    withLandSuccess: state.controls.withLandSuccess,
-    withReused: state.controls.withReused,
-    withReddit: state.controls.withReddit,
-  }));
+const controlsContext = (state: AppStore) => state.controls;
 
-  return controls;
+export function useControls() {
+  const controls = useSelector(controlsContext);
+
+  return {
+    isRefreshing: controls.isLoading,
+    withLandSuccess: controls.withLandSuccess,
+    withReused: controls.withReused,
+    withReddit: controls.withReddit,
+  };
 }
